@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>&#36873;&#21697;&#26032;&#27169;&#22411;&#35268;&#21017;&#37197;&#32622;</title>
+<style>
+body{margin:0;padding:24px;background:#f5f7fa;font-family:Arial,sans-serif;color:#303133}.page{max-width:1100px;margin:0 auto;padding:24px;background:#fff;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,.06)}.title{font-size:18px;font-weight:700;margin-bottom:18px}.toolbar{display:flex;justify-content:flex-end;align-items:center;margin-bottom:16px}.tip{display:none}.btn{height:34px;padding:0 16px;border:1px solid #dcdfe6;border-radius:4px;background:#fff;color:#606266;cursor:pointer}.btn-primary{background:#1890ff;border-color:#1890ff;color:#fff}table{width:100%;border-collapse:collapse;font-size:14px}th,td{border:1px solid #ebeef5;padding:13px 12px;text-align:center}th{background:#f5f7fa;font-weight:700}.tag{display:inline-block;margin:2px 4px 2px 0;padding:2px 8px;border-radius:3px;background:#ecf5ff;color:#409eff;font-size:12px}.ok{color:#67c23a;font-weight:700}.link{border:0;background:transparent;color:#1890ff;cursor:pointer}.danger{border:0;background:transparent;color:#f56c6c;cursor:pointer}.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);align-items:center;justify-content:center}.box{width:540px;background:#fff;border-radius:4px;font-size:14px}.box-hd{display:flex;justify-content:space-between;padding:18px 22px;border-bottom:1px solid #ebeef5;font-weight:700}.close{cursor:pointer}.box-bd{padding:24px}.row{display:flex;margin-bottom:20px}.label{width:160px;text-align:right;padding-right:12px;line-height:32px;font-size:14px}.field{flex:1;font-size:14px}.radio{line-height:32px;font-size:14px}.radio label{margin-right:24px}.helper{margin-top:6px;color:#909399;font-size:12px}.box-ft{padding:14px 22px;text-align:right;border-top:1px solid #ebeef5}.box-ft .btn{margin-left:10px}.combo{position:relative;width:100%}.combo-input{min-height:34px;border:1px solid #dcdfe6;border-radius:4px;background:#fff;padding:6px 32px 6px 10px;line-height:20px;cursor:pointer;color:#606266;font-size:14px}.combo.open .combo-input{border-color:#2f7cff;box-shadow:0 0 0 1px rgba(47,124,255,.08)}.combo-placeholder{color:#c0c4cc}.combo-clear{position:absolute;right:10px;top:7px;width:18px;height:18px;border:1px solid #dcdfe6;border-radius:50%;line-height:16px;text-align:center;color:#c0c4cc;background:#fff;cursor:pointer;font-size:12px}.combo-menu{display:none;position:absolute;top:38px;left:0;width:100%;max-height:260px;overflow:auto;background:#fff;border:1px solid #e4e7ed;border-radius:3px;box-shadow:0 2px 10px rgba(0,0,0,.12);z-index:50;padding:6px 0}.combo.open .combo-menu{display:block}.combo-option{height:34px;line-height:34px;padding:0 20px;color:#606266;cursor:pointer;font-size:14px}.combo-option:hover{background:#f5f7fa}.combo-option.active{background:#f3f6fb;color:#1f6fff;font-weight:700}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="title">&#36873;&#21697;&#26032;&#27169;&#22411;&#35268;&#21017;&#37197;&#32622;</div>
+  <div class="toolbar">
+    <button class="btn btn-primary" onclick="openModal()">&#26032;&#22686;&#37197;&#32622;</button>
+  </div>
+  <table>
+    <thead><tr><th width="80">&#24207;&#21495;</th><th>&#25512;&#36865;&#31867;&#22411;</th><th>&#31449;&#28857;</th><th width="210">&#26159;&#21542;&#26681;&#25454;&#27169;&#22411;&#32467;&#26524;&#33258;&#21160;&#23457;&#26680;</th><th width="120">&#25805;&#20316;&#20154;</th><th width="140">&#26356;&#26032;&#26102;&#38388;</th><th width="150">&#25805;&#20316;</th></tr></thead>
+    <tbody id="tableBody">
+      <tr data-push="one,two" data-site="US,CA" data-auto="yes"><td>1</td><td><span class="tag">&#19968;&#21333;&#36716;&#20837;</span><span class="tag">&#20108;&#21333;&#36716;&#20837;</span></td><td><span class="tag">US</span><span class="tag">CA</span></td><td><span class="ok">&#26159;</span></td><td>admin</td><td>2026-06-06</td><td><button class="link" onclick="editRow(this)">&#32534;&#36753;</button><button class="danger" onclick="deleteRow(this)">&#21024;&#38500;</button></td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="modal" id="modal">
+  <div class="box">
+    <div class="box-hd"><span id="modalTitle">&#26032;&#22686;&#37197;&#32622;</span><span class="close" onclick="closeModal()">x</span></div>
+    <div class="box-bd">
+      <div class="row"><div class="label">&#25512;&#36865;&#31867;&#22411;&#65306;</div><div class="field"><div class="combo" id="pushCombo"><div class="combo-input" onclick="toggleCombo('pushCombo')"></div><span class="combo-clear" onclick="clearCombo(event,'pushCombo')">x</span><div class="combo-menu"></div></div></div></div>
+      <div class="row"><div class="label">&#31449;&#28857;&#65306;</div><div class="field"><div class="combo" id="siteCombo"><div class="combo-input" onclick="toggleCombo('siteCombo')"></div><span class="combo-clear" onclick="clearCombo(event,'siteCombo')">x</span><div class="combo-menu"></div></div></div></div>
+      <div class="row"><div class="label">&#26159;&#21542;&#33258;&#21160;&#23457;&#26680;&#65306;</div><div class="field radio"><label><input type="radio" name="autoAudit" value="yes" checked>&#26159;</label><label><input type="radio" name="autoAudit" value="no">&#21542;</label></div></div>
+    </div>
+    <div class="box-ft"><button class="btn" onclick="closeModal()">&#21462;&#28040;</button><button class="btn btn-primary" onclick="saveRule()">&#20445;&#23384;</button></div>
+  </div>
+</div>
+<script>
+var labels={one:'&#19968;&#21333;&#36716;&#20837;',two:'&#20108;&#21333;&#36716;&#20837;',import:'&#24453;&#36716;&#23548;&#20837;',manual:'&#20154;&#24037;&#23548;&#20837;',yes:'&#26159;',no:'&#21542;'};
+var comboData={pushCombo:[{value:'one',label:'&#19968;&#21333;&#36716;&#20837;'},{value:'two',label:'&#20108;&#21333;&#36716;&#20837;'},{value:'import',label:'&#24453;&#36716;&#23548;&#20837;'},{value:'manual',label:'&#20154;&#24037;&#23548;&#20837;'}],siteCombo:[{value:'CA',label:'CA'},{value:'US',label:'US'},{value:'MX',label:'MX'},{value:'BR',label:'BR'},{value:'ES',label:'ES'},{value:'GB',label:'GB'},{value:'FR',label:'FR'},{value:'BE',label:'BE'}]};
+var selected={pushCombo:[],siteCombo:[]};
+var editingRow=null;
+function initCombos(){renderCombo('pushCombo');renderCombo('siteCombo')}
+function toggleCombo(id){document.querySelectorAll('.combo').forEach(function(c){if(c.id!==id)c.classList.remove('open')});document.getElementById(id).classList.toggle('open')}
+function clearCombo(e,id){e.stopPropagation();selected[id]=[];renderCombo(id)}
+function renderCombo(id){var combo=document.getElementById(id);var input=combo.querySelector('.combo-input');var menu=combo.querySelector('.combo-menu');var selectedLabels=comboData[id].filter(function(item){return selected[id].indexOf(item.value)>=0}).map(function(item){return item.label});input.innerHTML=selectedLabels.length?selectedLabels.join(', '):'<span class="combo-placeholder">'+(id==='siteCombo'?'&#35831;&#36873;&#25321;&#31449;&#28857;':'&#35831;&#36873;&#25321;&#25512;&#36865;&#31867;&#22411;')+'</span>';menu.innerHTML=comboData[id].map(function(item){var active=selected[id].indexOf(item.value)>=0;return '<div class="combo-option '+(active?'active':'')+'" onclick="selectOption(\''+id+'\',\''+item.value+'\')">'+item.label+'</div>'}).join('')}
+function selectOption(id,value){var index=selected[id].indexOf(value);if(index>=0){selected[id].splice(index,1)}else{selected[id].push(value)}renderCombo(id)}
+function openModal(){editingRow=null;document.getElementById('modalTitle').innerHTML='&#26032;&#22686;&#37197;&#32622;';clearForm();document.getElementById('modal').style.display='flex'}
+function closeModal(){document.getElementById('modal').style.display='none';document.querySelectorAll('.combo').forEach(function(c){c.classList.remove('open')})}
+function clearForm(){selected.pushCombo=[];selected.siteCombo=[];document.querySelector('input[name="autoAudit"][value="yes"]').checked=true;initCombos()}
+function tagHtml(values,type){return values.map(function(v){var text=type==='push'?labels[v]:v;return '<span class="tag">'+text+'</span>'}).join('')}
+function saveRule(){var push=selected.pushCombo.slice();var site=selected.siteCombo.slice();var auto=document.querySelector('input[name="autoAudit"]:checked').value;if(!push.length){alert('Please select push type');return}if(!site.length){alert('Please select site');return}var now=new Date();var date=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');var row=editingRow||document.createElement('tr');row.dataset.push=push.join(',');row.dataset.site=site.join(',');row.dataset.auto=auto;row.innerHTML='<td></td><td>'+tagHtml(push,'push')+'</td><td>'+tagHtml(site,'site')+'</td><td><span class="'+(auto==='yes'?'ok':'')+'">'+labels[auto]+'</span></td><td>admin</td><td>'+date+'</td><td><button class="link" onclick="editRow(this)">&#32534;&#36753;</button><button class="danger" onclick="deleteRow(this)">&#21024;&#38500;</button></td>';if(!editingRow)document.getElementById('tableBody').appendChild(row);refreshIndex();closeModal()}
+function editRow(btn){editingRow=btn.closest('tr');document.getElementById('modalTitle').innerHTML='&#32534;&#36753;&#37197;&#32622;';selected.pushCombo=(editingRow.dataset.push||'').split(',').filter(Boolean);selected.siteCombo=(editingRow.dataset.site||'').split(',').filter(Boolean);document.querySelector('input[name="autoAudit"][value="'+editingRow.dataset.auto+'"]').checked=true;initCombos();document.getElementById('modal').style.display='flex'}
+function deleteRow(btn){if(confirm('Delete this rule?')){btn.closest('tr').remove();refreshIndex()}}
+function refreshIndex(){Array.prototype.forEach.call(document.querySelectorAll('#tableBody tr'),function(row,index){row.children[0].innerText=index+1})}
+document.addEventListener('click',function(e){if(!e.target.closest('.combo'))document.querySelectorAll('.combo').forEach(function(c){c.classList.remove('open')})});
+initCombos();
+</script>
+</body>
+</html>
