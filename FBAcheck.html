@@ -429,8 +429,24 @@
 
     <!-- 数据表格 -->
     <div class="table-container">
-      <div style="margin-bottom: 10px;">
-        <el-button type="primary" @click="showBatchAuditDialog">批量审核</el-button>
+      <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; gap: 10px;">
+          <el-button type="primary" @click="showBatchAuditDialog">批量审核</el-button>
+          <el-button @click="goToInventoryCalc" style="color: #303133; border-color: #a0cfff; display: flex; align-items: center; justify-content: center; padding: 8px 15px;">
+            <svg viewBox="0 0 1024 1024" width="14" height="14" style="margin-right: 4px;"><path fill="#a0cfff" d="M969.8 288.5c-43.9-106.1-155.6-168.5-267.4-142.7-32.5 7.5-62.8 21.8-89.4 42.1L450.4 345.5 221.7 116.8c-15.6-15.6-40.9-15.6-56.6 0l-42.4 42.4c-15.6 15.6-15.6 40.9 0 56.6l228.7 228.7-157.6 157.6c-20.3 26.6-34.6 56.9-42.1 89.4-25.8 111.8 36.6 223.5 142.7 267.4 106.1 43.9 227.6-6.4 271.5-112.5 7.5-32.5 21.8-62.8 42.1-89.4l157.6-157.6 228.7 228.7c15.6 15.6 40.9 15.6 56.6 0l42.4-42.4c15.6-15.6 15.6-40.9 0-56.6L836.5 573.6l157.6-157.6c26.6-20.3 56.9-34.6 89.4-42.1 106.1-25.8 156.4-137.5 112.5-243.6z"></path></svg>
+            备货测算
+          </el-button>
+        </div>
+        <el-dropdown trigger="click">
+          <el-button style="color: #606266; border-color: #dcdfe6; display: flex; align-items: center; justify-content: center; padding: 8px 15px;">
+            规则设置 <el-icon class="el-icon--right"><ArrowDown /></el-icon>
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="goToModelRuleConfig">选品模型应用配置</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
       <el-table :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
         <!-- 勾选列 -->
@@ -1124,6 +1140,14 @@
           logDialogVisible.value = true;
         };
 
+        const goToInventoryCalc = () => {
+          window.open('https://tanya11tang.github.io/%E5%A4%87%E8%B4%A7%E6%B5%8B%E7%AE%97%E6%89%B9%E9%87%8F%E6%9F%A5%E8%AF%A2.html', '_blank');
+        };
+
+        const goToModelRuleConfig = () => {
+          window.open('https://tanya11tang.github.io/FBAnewProduct/new_model_rule_config_v3', '_blank');
+        };
+
           const tableData = ref([
           {
             id: 1,
@@ -1292,7 +1316,8 @@
           logDialogVisible, logCurrentPage, logData, showLogDialog,
           auditDialogVisible, auditForm, showAuditDialog,
           fbaSalespersonOptions,
-          multipleSelection, handleSelectionChange, batchAuditDialogVisible, batchAuditForm, showBatchAuditDialog, submitBatchAudit
+          multipleSelection, handleSelectionChange, batchAuditDialogVisible, batchAuditForm, showBatchAuditDialog, submitBatchAudit,
+          goToInventoryCalc, goToModelRuleConfig
         };
       }
     });
