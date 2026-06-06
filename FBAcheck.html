@@ -446,10 +446,21 @@
           <template #default="scope">
             <div style="display: flex; gap: 15px;">
               <!-- 左侧图片/状态 -->
-              <div class="img-col-container" style="flex-shrink: 0; width: 110px;">
-                <div class="img-top-text">{{ scope.row.listingType }}</div>
+              <div class="img-col-container" style="flex-shrink: 0; width: 110px; display: flex; flex-direction: column; align-items: center;">
+                <el-tag v-if="scope.row.opportunityTag" type="success" size="small" style="margin-bottom: 4px; white-space: normal; height: auto; padding: 2px 4px; line-height: 1.2; width: 100%;">{{ scope.row.opportunityTag }}</el-tag>
                 <img :src="scope.row.image" class="product-img" alt="产品图片" />
-                <el-tag v-if="scope.row.opportunityTag" type="success" size="small" style="margin-top: 4px; white-space: normal; height: auto; padding: 2px 4px; line-height: 1.2;">{{ scope.row.opportunityTag }}</el-tag>
+                <div class="img-top-text" style="margin-top: 4px; text-align: center;">{{ scope.row.listingType }}</div>
+                <el-tag v-if="scope.row.riskLevel" type="primary" size="small" style="margin-top: 8px; background-color: #409eff; color: white; border: none; border-radius: 4px;">{{ scope.row.riskLevel }}</el-tag>
+                <div v-if="scope.row.isProhibited" style="margin-top: 8px; width: 40px; height: 40px; border-radius: 50%; border: 3px solid #f56c6c; position: relative; display: flex; align-items: center; justify-content: center; background-color: white;">
+                  <span style="font-weight: bold; font-size: 10px; color: black;">amazon</span>
+                  <div style="position: absolute; width: 100%; height: 3px; background-color: #f56c6c; transform: rotate(-45deg);"></div>
+                </div>
+                <div v-if="scope.row.isCounterfeit" style="margin-top: 8px; width: 40px; height: 40px; border-radius: 50%; background-color: #f56c6c; display: flex; align-items: center; justify-content: center;">
+                  <div style="width: 24px; height: 20px; border: 2px solid white; border-radius: 2px; position: relative; display: flex; align-items: center; justify-content: center;">
+                    <div style="position: absolute; top: -4px; left: 2px; right: 2px; height: 4px; border: 2px solid white; border-bottom: none; border-radius: 2px 2px 0 0;"></div>
+                    <span style="color: white; font-size: 12px; font-weight: bold; line-height: 1;">仿</span>
+                  </div>
+                </div>
               </div>
               
               <!-- 右侧核心信息 -->
@@ -881,6 +892,40 @@
     >
       <div style="padding: 20px;">
         <el-form label-position="left" label-width="100px">
+          <el-form-item label="侵权风险">
+            <el-select v-model="filters.infringementRisk" placeholder="侵权风险" clearable style="width: 100%;">
+              <el-option label="非仿牌" value="non_counterfeit"></el-option>
+              <el-option label="疑似仿牌" value="suspected_counterfeit"></el-option>
+              <el-option label="仿牌" value="counterfeit"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="是否禁售">
+            <el-select v-model="filters.isForbidden" placeholder="是否禁售" clearable style="width: 100%;">
+              <el-option label="是" value="yes"></el-option>
+              <el-option label="否" value="no"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="风险等级">
+            <el-select v-model="filters.riskLevel" placeholder="风险等级" clearable style="width: 100%;">
+              <el-option label="暂无风险" value="none"></el-option>
+              <el-option label="低风险" value="low"></el-option>
+              <el-option label="中风险" value="medium"></el-option>
+              <el-option label="高风险" value="high"></el-option>
+              <el-option label="最高风险" value="highest"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="FBA业务员">
+            <el-tree-select
+              v-model="filters.fbaSalesperson"
+              :data="fbaSalespersonOptions"
+              multiple
+              show-checkbox
+              collapse-tags
+              collapse-tags-tooltip
+              placeholder="全部FBA/FBM业务员"
+              style="width: 100%;"
+            ></el-tree-select>
+          </el-form-item>
           <el-form-item label="节日标签">
             <el-select v-model="filters.holidayTag" placeholder="节日标签" clearable style="width: 100%;">
               <el-option label="圣诞节" value="christmas"></el-option>
@@ -949,6 +994,10 @@
           status: 'pending',
           recommendationType: [],
           pushType: [],
+          infringementRisk: '',
+          isForbidden: '',
+          riskLevel: '',
+          fbaSalesperson: [],
           starMin: '',
           starMax: '',
           salesType: 'sales_today',
@@ -960,6 +1009,61 @@
           probMin: '',
           probMax: ''
         });
+
+        const fbaSalespersonOptions = [
+          {
+            value: '1',
+            label: '综合平台运营中心',
+            children: [
+              { value: '1-1', label: '业务一部' },
+              { value: '1-2', label: '业务二部' }
+            ]
+          },
+          {
+            value: '2',
+            label: '成都办事处',
+            children: [
+              { value: '2-1', label: '成都一部' }
+            ]
+          },
+          {
+            value: '3',
+            label: '赛盒临时测试部门',
+            children: []
+          },
+          {
+            value: '4',
+            label: '智汇有品事业部',
+            children: [
+              { value: '4-1', label: '智汇一部' }
+            ]
+          },
+          {
+            value: '5',
+            label: '智能研发中心',
+            children: []
+          },
+          {
+            value: '6',
+            label: '运营管理中心',
+            children: []
+          },
+          {
+            value: '7',
+            label: '技术研发中心',
+            children: []
+          },
+          {
+            value: '8',
+            label: '盛宝隆',
+            children: []
+          },
+          {
+            value: '9',
+            label: '其他',
+            children: []
+          }
+        ];
 
         // 批量审核状态
         const multipleSelection = ref([]);
@@ -1020,7 +1124,7 @@
           logDialogVisible.value = true;
         };
 
-        const tableData = ref([
+          const tableData = ref([
           {
             id: 1,
             // 左侧图片/状态
@@ -1029,6 +1133,10 @@
             image: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
             isOutOfStock: true,
             logisticsAttr: '非仿牌',
+            opportunityTag: 'FBA潜力品',
+            riskLevel: '中风险',
+            isProhibited: true,
+            isCounterfeit: true,
             
             // 中间产品信息
             titleEn: '2Pcs Vintage Brass Kylin Statue Decorative Chinese Dragon Ornament Feng Shui Min...',
@@ -1107,6 +1215,8 @@
             image: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
             isOutOfStock: false,
             logisticsAttr: '普货',
+            riskLevel: '低风险',
+            isProhibited: false,
             
             titleEn: 'Vintage Classic Retro Leather Notebook Journal Diary Sketchbook Blank String...',
             titleZh: '复古经典复古真皮笔记本手账素描本空白页带绳...',
@@ -1181,6 +1291,7 @@
           drawerVisible, filters, tableData,
           logDialogVisible, logCurrentPage, logData, showLogDialog,
           auditDialogVisible, auditForm, showAuditDialog,
+          fbaSalespersonOptions,
           multipleSelection, handleSelectionChange, batchAuditDialogVisible, batchAuditForm, showBatchAuditDialog, submitBatchAudit
         };
       }
