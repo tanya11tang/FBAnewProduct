@@ -466,6 +466,7 @@
                 <el-tag v-if="scope.row.opportunityTag" type="success" size="small" style="margin-bottom: 4px; white-space: normal; height: auto; padding: 2px 4px; line-height: 1.2; width: 100%;">{{ scope.row.opportunityTag }}</el-tag>
                 <img :src="scope.row.image" class="product-img" alt="产品图片" />
                 <div class="img-top-text" style="margin-top: 4px; text-align: center;">{{ scope.row.listingType }}</div>
+                <el-tag v-if="scope.row.productStatus" :style="{ backgroundColor: scope.row.productStatus === '正常' ? '#85ce61' : '#f59a23', color: 'white', border: 'none', borderRadius: '4px', marginTop: '8px' }" size="small">{{ scope.row.productStatus }}</el-tag>
                 <el-tag v-if="scope.row.riskLevel" type="primary" size="small" style="margin-top: 8px; background-color: #409eff; color: white; border: none; border-radius: 4px;">{{ scope.row.riskLevel }}</el-tag>
                 <div v-if="scope.row.isProhibited" style="margin-top: 8px; width: 40px; height: 40px; border-radius: 50%; border: 3px solid #f56c6c; position: relative; display: flex; align-items: center; justify-content: center; background-color: white;">
                   <span style="font-weight: bold; font-size: 10px; color: black;">amazon</span>
@@ -582,6 +583,9 @@
           </template>
           <template #default="scope">
             <div class="info-list" style="gap: 5px;">
+              <div class="info-item">
+                <el-tag size="small" style="background-color: #67c23a; color: white; border: none; border-radius: 4px;">{{ scope.row.listingSaleStatus }}</el-tag>
+              </div>
               <div class="info-item">
                 <span class="info-label">来源渠道:</span>
                 <span class="info-value">{{ scope.row.sourceChannel }}</span>
@@ -877,8 +881,6 @@
         <el-form-item label="审核结果" required>
           <el-radio-group v-model="batchAuditForm.status">
             <el-radio label="审核通过">审核通过</el-radio>
-            <el-radio label="暂不处理">暂不处理</el-radio>
-            <el-radio label="已转FBA">已转FBA</el-radio>
             <el-radio label="审核不通过">审核不通过</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -907,7 +909,39 @@
       direction="rtl"
     >
       <div style="padding: 20px;">
-        <el-form label-position="left" label-width="100px">
+        <el-form label-position="left" label-width="120px">
+          <el-form-item label="listing状态">
+            <el-select v-model="filters.listingStatus" placeholder="全部状态" multiple collapse-tags collapse-tags-tooltip clearable style="width: 100%;">
+              <el-option label="在售" value="on_sale"></el-option>
+              <el-option label="非在售" value="not_on_sale"></el-option>
+              <el-option label="已禁止显示" value="suppressed"></el-option>
+              <el-option label="详情页面已删除" value="detail_page_removed"></el-option>
+              <el-option label="已删除" value="deleted"></el-option>
+              <el-option label="不完整" value="incomplete"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="产品状态">
+            <el-select v-model="filters.productStatus" placeholder="产品状态" multiple collapse-tags collapse-tags-tooltip clearable style="width: 100%;">
+              <el-option label="正常" value="normal"></el-option>
+              <el-option label="起批量" value="moq"></el-option>
+              <el-option label="暂时缺货" value="temporarily_out_of_stock"></el-option>
+              <el-option label="清库" value="clearance"></el-option>
+              <el-option label="停产" value="discontinued"></el-option>
+              <el-option label="锁定" value="locked"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <template #label>
+              <div style="line-height: 18px; text-align: left;">
+                <div>待转来源渠道</div>
+                <div>是否开启备货</div>
+              </div>
+            </template>
+            <el-select v-model="filters.pendingSourceStockStatus" placeholder="请选择" multiple collapse-tags collapse-tags-tooltip clearable style="width: 100%;">
+              <el-option label="开启备货" value="enabled"></el-option>
+              <el-option label="限制备货" value="restricted"></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="侵权风险">
             <el-select v-model="filters.infringementRisk" placeholder="侵权风险" clearable style="width: 100%;">
               <el-option label="非仿牌" value="non_counterfeit"></el-option>
@@ -1010,6 +1044,9 @@
           status: 'pending',
           recommendationType: [],
           pushType: [],
+          listingStatus: [],
+          productStatus: [],
+          pendingSourceStockStatus: [],
           infringementRisk: '',
           isForbidden: '',
           riskLevel: '',
@@ -1158,6 +1195,7 @@
             isOutOfStock: true,
             logisticsAttr: '非仿牌',
             opportunityTag: 'FBA潜力品',
+            productStatus: '正常',
             riskLevel: '中风险',
             isProhibited: true,
             isCounterfeit: true,
@@ -1176,6 +1214,7 @@
             store: 'Amazon-Z01008-US',
             sourceChannel: 'Amazon-Z01008-US',
             replaceSourceChannel: 'Amazon-Z011235-US',
+            listingSaleStatus: '在售',
             storeStatus: '正常',
             isStockEnabled: true,
             starRating: '4.5',
@@ -1239,6 +1278,7 @@
             image: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
             isOutOfStock: false,
             logisticsAttr: '普货',
+            productStatus: '暂时缺货',
             riskLevel: '低风险',
             isProhibited: false,
             
@@ -1253,6 +1293,7 @@
 
             store: 'Amazon-Z01008-US',
             sourceChannel: 'Amazon-Z01008-US',
+            listingSaleStatus: '在售',
             storeStatus: '正常',
             isStockEnabled: false,
             starRating: '4.8',
